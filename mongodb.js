@@ -7,14 +7,24 @@ const dbName = "task-manager";
 mongodb.MongoClient.connect(
   connectionURL,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  (error, client) => {
-    if (error) return console.log("Unable to connect to database");
+  (err, client) => {
+    if (err) return console.log("Unable to connect to database");
 
     const db = client.db(dbName);
 
-    db.collection("users").insertOne({
-      Name: "Lindinha",
-      age: 33,
-    });
+    db.collection("users").insertMany(
+      [
+        {
+          Name: "Lindinha",
+          age: 33,
+        },
+        { Name: "Giovani", age: 34 },
+      ],
+      (err, res) => {
+        if (err) return console.log("Unable to insert documents");
+
+        console.log(res.ops);
+      }
+    );
   }
 );
