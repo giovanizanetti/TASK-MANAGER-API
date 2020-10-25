@@ -1,55 +1,21 @@
-const mongodb = require("mongodb");
-const mongoClient = mongodb.mongoClient;
+const { MongoClient, ObjectID } = require("mongodb");
 
 const connectionURL = "mongodb://127.0.0.1:27017";
 const dbName = "task-manager";
 
-// mongodb.MongoClient.connect(
-// connectionURL,
-// { useNewUrlParser: true, useUnifiedTopology: true },
-// (err, client) => {
-//   if (err) return console.log("Unable to connect to database");
-
-//   const db = client.db(dbName);
-
-//   db.collection("users").insertMany(
-//     [
-//       {
-//         Name: "Lindinha",
-//         age: 33,
-//       },
-//       { Name: "Giovani", age: 34 },
-//     ],
-//     (err, res) => {
-//       if (err) return console.log("Unable to insert documents");
-
-//       console.log(res.ops);
-//     }
-//   );
-// }
-
-mongodb.MongoClient.connect(
+MongoClient.connect(
   connectionURL,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
+  { useNewUrlParser: true, useUnifiedTopology: true },
   (err, client) => {
     if (err) return console.log("Unable to connect to database");
 
     const db = client.db(dbName);
 
-    db.collection("tasks").insertMany(
-      [
-        { description: "walk the dog", completed: false },
-        { description: "Buy groceries", completed: false },
-        { description: "Have fun", completed: false },
-      ],
-      (err, res) => {
-        if (err) return console.log("Unable to insert documents");
-
-        console.log(res.ops);
-      }
-    );
+    db.collection("tasks")
+      .deleteMany({
+        description: "walk the dog",
+      })
+      .then((res) => console.log(res.deletedCount))
+      .catch((err) => console.log(err));
   }
 );
