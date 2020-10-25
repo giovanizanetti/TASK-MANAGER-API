@@ -9,18 +9,24 @@ mongoose.connect("mongodb://127.0.0.1:27017/task-manager-api", {
 const User = mongoose.model("user", {
   name: {
     type: String,
+    required: true,
   },
   age: {
     type: Number,
+    required: true,
+    validate(value) {
+      if (value < 0) throw new Error("Age must be a valid age ");
+    },
   },
   email: {
     type: String,
+    required: true,
   },
 });
 
 const me = new User({
   name: "Gio",
-  age: 33,
+  age: -1,
   email: "lindinha@lindinha.com",
 });
 
@@ -31,6 +37,7 @@ me.save()
 const Task = mongoose.model("task", {
   description: {
     type: String,
+    required: true,
   },
   completed: {
     type: Boolean,
