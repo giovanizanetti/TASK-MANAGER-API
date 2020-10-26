@@ -58,15 +58,15 @@ const Task = mongoose.model("task", {
   description: {
     type: String,
     required: true,
+    trim: true,
   },
   completed: {
     type: Boolean,
+    default: false,
   },
 });
-
 const task = new Task({
-  description: "Go shopping",
-  completed: false,
+  description: "Go to the gin  ",
 });
 
 task
