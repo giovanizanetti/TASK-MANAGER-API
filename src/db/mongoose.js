@@ -37,7 +37,7 @@ const User = mongoose.model("user", {
     minlength: 6,
     validate(value) {
       const word = "password";
-      if (value.includes("password"))
+      if (value.toLowerCase().includes("password"))
         throw new Error(`Password can not contain the word ${word}`);
     },
   },
