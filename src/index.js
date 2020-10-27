@@ -21,7 +21,7 @@ app.post("/users", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  User.find({})
+  User.find()
     .then((users) => {
       res.send(users);
     })
@@ -52,6 +52,16 @@ app.post("/tasks", (req, res) => {
     })
     .catch((err) => {
       res.status(400).send(err);
+    });
+});
+
+app.get("/tasks", (req, res) => {
+  Task.find()
+    .then((tasks) => {
+      res.send(tasks);
+    })
+    .catch((err) => {
+      res.status(500).send();
     });
 });
 
