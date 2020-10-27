@@ -37,11 +37,4 @@ const User = mongoose.model("user", {
   },
 });
 
-const me = new User({
-  name: "Paulo    ",
-  age: 1,
-  email: "Palo@gmail.com",
-  password: "bnanansns",
-});
-
 module.exports = User;
