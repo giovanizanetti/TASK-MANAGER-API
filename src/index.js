@@ -40,16 +40,23 @@ app.get("/users/:id", (req, res) => {
     });
 });
 
-app.post("/tasks", (req, res) => {
+app.post("/tasks", async (req, res) => {
   const task = new Task(req.body);
-  task
-    .save()
-    .then(() => {
-      res.status(201).send(task);
-    })
-    .catch((err) => {
-      res.status(400).send(err);
-    });
+
+  try {
+    task.save();
+    res.status(201).send(task);
+  } catch {
+    res.status(400).send(err);
+  }
+  // task
+  //   .save()
+  //   .then(() => {
+  //     res.status(201).send(task);
+  //   })
+  //   .catch((err) => {
+  //     res.status(400).send(err);
+  //   });
 });
 
 app.get("/tasks", (req, res) => {
