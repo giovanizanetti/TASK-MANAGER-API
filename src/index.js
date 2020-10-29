@@ -20,8 +20,8 @@ app.post("/users", async (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
+  const users = await User.find();
   try {
-    await User.find();
     res.send(users);
   } catch {
     res.status(500).send();
@@ -49,24 +49,15 @@ app.post("/tasks", async (req, res) => {
   } catch {
     res.status(400).send(err);
   }
-  // task
-  //   .save()
-  //   .then(() => {
-  //     res.status(201).send(task);
-  //   })
-  //   .catch((err) => {
-  //     res.status(400).send(err);
-  //   });
 });
 
-app.get("/tasks", (req, res) => {
-  Task.find()
-    .then((tasks) => {
-      res.status(201).send(tasks);
-    })
-    .catch((err) => {
-      res.status(500).send();
-    });
+app.get("/tasks", async (req, res) => {
+  try {
+    await Task.find();
+    res.status(201).send(tasks);
+  } catch {
+    res.status(500).send();
+  }
 });
 
 app.get("/tasks/:id", (req, res) => {
