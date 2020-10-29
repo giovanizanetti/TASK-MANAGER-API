@@ -20,8 +20,8 @@ app.post("/users", async (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-  const users = await User.find();
   try {
+    const users = await User.find();
     res.send(users);
   } catch {
     res.status(500).send();
@@ -53,7 +53,7 @@ app.post("/tasks", async (req, res) => {
 
 app.get("/tasks", async (req, res) => {
   try {
-    await Task.find();
+    const tasks = await Task.find();
     res.status(201).send(tasks);
   } catch {
     res.status(500).send();
