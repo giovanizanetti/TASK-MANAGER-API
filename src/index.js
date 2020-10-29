@@ -60,24 +60,17 @@ app.get("/tasks", async (req, res) => {
   }
 });
 
-// app.get("/tasks/:id", (req, res) => {
-//   const _id = req.params.id;
+app.get("/tasks/:id", async (req, res) => {
+  const _id = req.params.id;
 
-//   try {
-
-//   } catch (err) {
-
-//   }
-
-//   Task.findById(_id)
-//     .then((task) => {
-//       if (!task) return res.status(404).send();
-//       res.send(task);
-//     })
-//     .catch((err) => {
-//       res.status(500).send();
-//     });
-// });
+  try {
+    const task = await Task.findById(_id);
+    if (!task) return res.status(404).send();
+    res.send(task);
+  } catch (err) {
+    res.status(500).send();
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is up on ${port}`);
