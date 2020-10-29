@@ -50,8 +50,6 @@ app.patch("/users/:id", async (req, res) => {
     allowedUpdates.includes(update)
   );
 
-  console.log(updates);
-
   try {
     const user = await User.findByIdAndUpdate(_id, newData, options);
 
