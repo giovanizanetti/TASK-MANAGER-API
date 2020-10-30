@@ -1,83 +1,85 @@
 const express = require("express");
+const router = require("./routers");
 require("./db/mongoose.js");
-const User = require("./models/user");
+// const User = require("./models/user");
 const Task = require("./models/task.js");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(router);
 
-app.post("/users", async (req, res) => {
-  const user = new User(req.body);
+// app.post("/users", async (req, res) => {
+//   const user = new User(req.body);
 
-  try {
-    await user.save();
-    res.status(201).send(user);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
+//   try {
+//     await user.save();
+//     res.status(201).send(user);
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+// });
 
-app.get("/users", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.send(users);
-  } catch (err) {
-    res.status(500).send();
-  }
-});
+// app.get("/users", async (req, res) => {
+//   try {
+//     const users = await User.find();
+//     res.send(users);
+//   } catch (err) {
+//     res.status(500).send();
+//   }
+// });
 
-app.get("/users/:id", async (req, res) => {
-  const _id = req.params.id;
+// app.get("/users/:id", async (req, res) => {
+//   const _id = req.params.id;
 
-  try {
-    const user = await User.findById(_id);
-    if (!user) return res.status(404).send();
-    res.send(user);
-  } catch (err) {
-    res.status(500).send();
-  }
-});
+//   try {
+//     const user = await User.findById(_id);
+//     if (!user) return res.status(404).send();
+//     res.send(user);
+//   } catch (err) {
+//     res.status(500).send();
+//   }
+// });
 
-app.patch("/users/:id", async (req, res) => {
-  const _id = req.params.id;
-  const newData = req.body;
-  const options = { new: true, runValidators: true, useFindAndModify: false };
-  const updates = Object.keys(newData);
-  const allowedUpdates = ["name", "password", "email", "age"];
-  const isValidOperation = updates.every((update) =>
-    allowedUpdates.includes(update)
-  );
+// app.patch("/users/:id", async (req, res) => {
+//   const _id = req.params.id;
+//   const newData = req.body;
+//   const options = { new: true, runValidators: true, useFindAndModify: false };
+//   const updates = Object.keys(newData);
+//   const allowedUpdates = ["name", "password", "email", "age"];
+//   const isValidOperation = updates.every((update) =>
+//     allowedUpdates.includes(update)
+//   );
 
-  try {
-    const user = await User.findByIdAndUpdate(_id, newData, options);
+//   try {
+//     const user = await User.findByIdAndUpdate(_id, newData, options);
 
-    if (!isValidOperation) {
-      return res.status(400).send({
-        error: "Invalid update!",
-      });
-    }
-    if (!user) {
-      return res.status(404).send();
-    }
-    res.send(user);
-  } catch (err) {
-    res.status(400).send(err);
-  }
-});
+//     if (!isValidOperation) {
+//       return res.status(400).send({
+//         error: "Invalid update!",
+//       });
+//     }
+//     if (!user) {
+//       return res.status(404).send();
+//     }
+//     res.send(user);
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+// });
 
-app.delete("/users/:id", async (req, res) => {
-  const _id = req.params.id;
+// app.delete("/users/:id", async (req, res) => {
+//   const _id = req.params.id;
 
-  try {
-    const user = await User.findByIdAndDelete(_id);
-    if (!user) {
-      return res.status(404).send({ error: "User not found!" });
-    }
-    res.send(user);
-  } catch (err) {}
-});
+//   try {
+//     const user = await User.findByIdAndDelete(_id);
+//     if (!user) {
+//       return res.status(404).send({ error: "User not found!" });
+//     }
+//     res.send(user);
+//   } catch (err) {}
+// });
 
 app.post("/tasks", async (req, res) => {
   const task = new Task(req.body);
