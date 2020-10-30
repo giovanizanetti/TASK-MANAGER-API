@@ -67,6 +67,18 @@ app.patch("/users/:id", async (req, res) => {
   }
 });
 
+app.delete("/users/:id", async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const user = await User.findByIdAndDelete(_id);
+    if (!user) {
+      return res.status(404).send({ error: "User not found!" });
+    }
+    res.send(user);
+  } catch (err) {}
+});
+
 app.post("/tasks", async (req, res) => {
   const task = new Task(req.body);
 
@@ -111,8 +123,9 @@ app.patch("/tasks/:id", async (req, res) => {
 
   try {
     const task = await Task.findByIdAndUpdate(_id, newData, options);
-    if (!isValidOperation) res.status(400).send({ error: "Invalid update!" });
-    if (!task) res.status(404).send();
+    if (!isValidOperation)
+      return res.status(400).send({ error: "Invalid update!" });
+    if (!task) return res.status(404).send();
     res.send(task);
   } catch (err) {
     res.status(400).send(err);
