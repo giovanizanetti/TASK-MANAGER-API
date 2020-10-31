@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  createUser,
+  signup,
   login,
   readUsers,
   getSingleUser,
@@ -17,7 +17,7 @@ const {
   removeTask,
 } = require("./task");
 
-router.post("/users", createUser);
+router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users", readUsers);
 router.get("/users/:id", getSingleUser);

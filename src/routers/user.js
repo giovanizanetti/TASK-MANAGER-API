@@ -1,6 +1,6 @@
 const User = require("../models/user");
 
-const createUser = async (req, res) => {
+const signup = async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
@@ -86,7 +86,7 @@ const removeUser = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
+  signup,
   login,
   readUsers,
   getSingleUser,
