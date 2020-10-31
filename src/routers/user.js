@@ -1,3 +1,4 @@
+const { use } = require(".");
 const User = require("../models/user");
 
 const readUsers = async (req, res) => {
@@ -42,7 +43,11 @@ const updateUser = async (req, res) => {
   );
 
   try {
-    const user = await User.findByIdAndUpdate(_id, newData, options);
+    // const user = await User.findByIdAndUpdate(_id, newData, options);
+    const user = await User.findById(_id);
+
+    updates.forEach((update) => (user[update] = newData[update]));
+    await user.save();
 
     if (!isValidOperation) {
       return res.status(400).send({
