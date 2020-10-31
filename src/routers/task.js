@@ -36,16 +36,22 @@ const updateTask = async (req, res) => {
   const _id = req.params.id;
   const newData = req.body;
   const updates = Object.keys(newData);
-  const options = { new: true, runValidators: true, useFindAndModify: false };
+  const saveOptions = { validateModifiedOnly: true };
+
   const allowedUpdates = ["description", "completed"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
 
+  if (!isValidOperation)
+    return res.status(400).send({ error: "Invalid update!" });
+
   try {
-    const task = await Task.findByIdAndUpdate(_id, newData, options);
-    if (!isValidOperation)
-      return res.status(400).send({ error: "Invalid update!" });
+    const task = await Task.findById(_id);
+
+    updates.forEach((update) => (task[update] = newData[update]));
+    await task.save(saveOptions);
+
     if (!task) return res.status(404).send();
     res.send(task);
   } catch (err) {

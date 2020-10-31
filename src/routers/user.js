@@ -1,4 +1,3 @@
-const { use, options } = require(".");
 const User = require("../models/user");
 
 const readUsers = async (req, res) => {
@@ -36,7 +35,7 @@ const updateUser = async (req, res) => {
   const _id = req.params.id;
   const newData = req.body;
   // const options = { new: true, runValidators: true, useFindAndModify: false };
-  const options = { validateModifiedOnly: true };
+  const saveOptions = { validateModifiedOnly: true };
   const updates = Object.keys(newData);
   const allowedUpdates = ["name", "password", "email", "age"];
   const isValidOperation = updates.every((update) =>
@@ -54,7 +53,7 @@ const updateUser = async (req, res) => {
     const user = await User.findById(_id);
 
     updates.forEach((update) => (user[update] = newData[update]));
-    await user.save(options);
+    await user.save(saveOptions);
 
     if (!user) {
       return res.status(404).send();
