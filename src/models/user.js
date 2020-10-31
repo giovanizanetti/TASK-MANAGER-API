@@ -37,21 +37,24 @@ const userSchema = new mongoose.Schema({
       if (value.toLowerCase().includes("password"))
         throw new Error(`Password can not contain the word ${word}`);
     },
-    token: [
-      {
-        token: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
   },
+  tokens: [
+    {
+      type: {
+        type: String,
+      },
+    },
+  ],
 });
 
 // Generate token
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user.id }, "blajdjdjdj");
+  const token = jwt.sign({ _id: user.id.toString() }, "blajdjdjdj");
+
+  user.tokens.push({ token });
+  await user.save();
+
   return token;
 };
 
@@ -59,8 +62,6 @@ userSchema.methods.generateAuthToken = async function () {
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
   if (!user) throw new Error("Unable to login");
-
-  console.log("hahahahahahahh");
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) throw new Error("Unable to login");
