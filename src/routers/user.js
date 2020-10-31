@@ -1,14 +1,5 @@
 const User = require("../models/user");
 
-const readUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.send(users);
-  } catch (err) {
-    res.status(500).send();
-  }
-};
-
 const createUser = async (req, res) => {
   const user = new User(req.body);
   try {
@@ -16,6 +7,26 @@ const createUser = async (req, res) => {
     res.status(201).send(user);
   } catch (err) {
     res.status(400).send(err);
+  }
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  console.log(email, password);
+  try {
+    const user = await User.findByCredentials(email, password);
+    res.send(user);
+  } catch (err) {
+    res.status(400).send();
+  }
+};
+
+const readUsers = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.send(users);
+  } catch (err) {
+    res.status(500).send();
   }
 };
 
@@ -34,7 +45,6 @@ const getSingleUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const _id = req.params.id;
   const newData = req.body;
-  // const options = { new: true, runValidators: true, useFindAndModify: false };
   const saveOptions = { validateModifiedOnly: true };
   const updates = Object.keys(newData);
   const allowedUpdates = ["name", "password", "email", "age"];
@@ -49,7 +59,6 @@ const updateUser = async (req, res) => {
   }
 
   try {
-    // const user = await User.findByIdAndUpdate(_id, newData, options);
     const user = await User.findById(_id);
 
     updates.forEach((update) => (user[update] = newData[update]));
@@ -77,8 +86,9 @@ const removeUser = async (req, res) => {
 };
 
 module.exports = {
-  readUsers,
   createUser,
+  login,
+  readUsers,
   getSingleUser,
   updateUser,
   removeUser,
