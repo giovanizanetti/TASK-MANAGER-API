@@ -1,4 +1,4 @@
-const { use } = require(".");
+const { use, options } = require(".");
 const User = require("../models/user");
 
 const readUsers = async (req, res) => {
@@ -35,25 +35,27 @@ const getSingleUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const _id = req.params.id;
   const newData = req.body;
-  const options = { new: true, runValidators: true, useFindAndModify: false };
+  // const options = { new: true, runValidators: true, useFindAndModify: false };
+  const options = { validateModifiedOnly: true };
   const updates = Object.keys(newData);
   const allowedUpdates = ["name", "password", "email", "age"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );
 
+  if (!isValidOperation) {
+    return res.status(400).send({
+      error: "Invalid updates!",
+    });
+  }
+
   try {
     // const user = await User.findByIdAndUpdate(_id, newData, options);
-    const user = await User.findById(_id);
+    const user = await User.findById(_id, options);
 
     updates.forEach((update) => (user[update] = newData[update]));
     await user.save();
 
-    if (!isValidOperation) {
-      return res.status(400).send({
-        error: "Invalid update!",
-      });
-    }
     if (!user) {
       return res.status(404).send();
     }
