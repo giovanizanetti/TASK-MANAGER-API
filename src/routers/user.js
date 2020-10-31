@@ -12,10 +12,11 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password);
+
   try {
     const user = await User.findByCredentials(email, password);
-    res.send(user);
+    const token = await user.generateAuthToken();
+    res.send({ user, token });
   } catch (err) {
     res.status(400).send();
   }
