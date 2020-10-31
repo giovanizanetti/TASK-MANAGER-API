@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
       if (value.toLowerCase().includes("password"))
         throw new Error(`Password can not contain the word ${word}`);
     },
+    token: [
+      {
+        token: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
 });
 
