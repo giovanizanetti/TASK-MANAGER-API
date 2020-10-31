@@ -3,8 +3,9 @@ const User = require("../models/user");
 const signup = async (req, res) => {
   const user = new User(req.body);
   try {
+    const token = await user.generateAuthToken();
     await user.save();
-    res.status(201).send(user);
+    res.status(201).send({ user, token });
   } catch (err) {
     res.status(400).send(err);
   }
