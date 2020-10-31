@@ -51,10 +51,10 @@ const updateUser = async (req, res) => {
 
   try {
     // const user = await User.findByIdAndUpdate(_id, newData, options);
-    const user = await User.findById(_id, options);
+    const user = await User.findById(_id);
 
     updates.forEach((update) => (user[update] = newData[update]));
-    await user.save();
+    await user.save(options);
 
     if (!user) {
       return res.status(404).send();
