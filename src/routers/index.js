@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 const {
   signup,
@@ -18,8 +19,8 @@ const {
 } = require("./task");
 
 router.post("/users/signup", signup);
-router.post("/users/login", login);
-router.get("/users", readUsers);
+router.post("/users/login", auth, login);
+router.get("/users", auth, readUsers);
 router.get("/users/:id", getSingleUser);
 router.patch("/users/:id", updateUser);
 router.delete("/users/:id", removeUser);
