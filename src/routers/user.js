@@ -23,13 +23,8 @@ const login = async (req, res) => {
   }
 };
 
-const readUsers = async (req, res) => {
-  try {
-    const users = await User.find();
-    res.send(users);
-  } catch (err) {
-    res.status(500).send();
-  }
+const userProfile = async (req, res) => {
+  res.send(req.user);
 };
 
 const getSingleUser = async (req, res) => {
@@ -90,7 +85,7 @@ const removeUser = async (req, res) => {
 module.exports = {
   signup,
   login,
-  readUsers,
+  userProfile,
   getSingleUser,
   updateUser,
   removeUser,

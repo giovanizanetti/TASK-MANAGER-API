@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const {
   signup,
   login,
-  readUsers,
+  userProfile,
   getSingleUser,
   updateUser,
   removeUser,
@@ -18,9 +18,10 @@ const {
   removeTask,
 } = require("./task");
 
+router.get("/users/me", auth, userProfile);
 router.post("/users/signup", signup);
 router.post("/users/login", auth, login);
-router.get("/users", auth, readUsers);
+// router.get("/users", auth, readUsers);
 router.get("/users/:id", getSingleUser);
 router.patch("/users/:id", updateUser);
 router.delete("/users/:id", removeUser);
