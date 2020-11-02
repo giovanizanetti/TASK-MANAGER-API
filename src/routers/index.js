@@ -19,16 +19,16 @@ const {
 } = require("./task");
 
 router.post("/users/signup", signup);
-router.post("/users/login", auth, login);
+router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
-router.get("/users/:id", getSingleUser);
-router.patch("/users/:id", updateUser);
-router.delete("/users/:id", removeUser);
+router.get("/users/:id", auth, getSingleUser);
+router.patch("/users/:id", auth, updateUser);
+router.delete("/users/:id", auth, removeUser);
 
-router.post("/tasks", createTask);
-router.get("/tasks", readTasks);
-router.get("/tasks/:id", getSingleTask);
-router.patch("/tasks/:id", updateTask);
-router.delete("/tasks/:id", removeTask);
+router.post("/tasks", auth, createTask);
+router.get("/tasks", auth, readTasks);
+router.get("/tasks/:id", auth, getSingleTask);
+router.patch("/tasks/:id", auth, updateTask);
+router.delete("/tasks/:id", auth, removeTask);
 
 module.exports = router;
