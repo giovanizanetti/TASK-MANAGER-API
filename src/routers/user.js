@@ -19,7 +19,7 @@ const login = async (req, res) => {
     const token = await user.generateAuthToken();
     res.send({ user, token });
   } catch (err) {
-    res.status(400).send(err);
+    res.status(400).send("Unable to login.");
   }
 };
 
