@@ -50,18 +50,6 @@ const logoutAll = async (req, res) => {
   }
 };
 
-const getSingleUser = async (req, res) => {
-  const _id = req.params.id;
-
-  try {
-    const user = await User.findById(_id);
-    if (!user) return res.status(404).send();
-    res.send(user);
-  } catch (err) {
-    res.status(500).send();
-  }
-};
-
 const updateUser = async (req, res) => {
   const _id = req.params.id;
   const newData = req.body;
@@ -111,7 +99,6 @@ module.exports = {
   userProfile,
   logout,
   logoutAll,
-  getSingleUser,
   updateUser,
   removeUser,
 };
