@@ -7,6 +7,7 @@ const {
   login,
   userProfile,
   logout,
+  logoutAll,
   getSingleUser,
   updateUser,
   removeUser,
@@ -23,6 +24,7 @@ router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
 router.post("/users/logout", auth, logout);
+router.post("/users/logoutAll", auth, logoutAll);
 router.get("/users/:id", auth, getSingleUser);
 router.patch("/users/:id", auth, updateUser);
 router.delete("/users/:id", auth, removeUser);

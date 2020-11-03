@@ -40,6 +40,16 @@ const logout = async (req, res) => {
   }
 };
 
+const logoutAll = async (req, res) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.send();
+  } catch (err) {
+    res.status(500).send;
+  }
+};
+
 const getSingleUser = async (req, res) => {
   const _id = req.params.id;
 
@@ -100,6 +110,7 @@ module.exports = {
   login,
   userProfile,
   logout,
+  logoutAll,
   getSingleUser,
   updateUser,
   removeUser,
