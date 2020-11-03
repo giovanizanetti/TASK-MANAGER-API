@@ -1,7 +1,10 @@
 const Task = require("../models/task");
 
 const createTask = async (req, res) => {
-  const task = new Task(req.body);
+  const task = new Task({
+    ...req.body,
+    author: req.user._id,
+  });
 
   try {
     task.save();
