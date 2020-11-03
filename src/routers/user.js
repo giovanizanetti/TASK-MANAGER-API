@@ -82,13 +82,9 @@ const updateUser = async (req, res) => {
 };
 
 const removeUser = async (req, res) => {
-  const _id = req.params.id;
-
   try {
-    const user = await User.findByIdAndDelete(_id);
-    if (!user) {
-      return res.status(404).send({ error: "User not found!" });
-    }
+    const user = req.user;
+    await user.remove();
     res.send(user);
   } catch (err) {}
 };

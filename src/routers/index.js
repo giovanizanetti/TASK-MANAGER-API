@@ -31,6 +31,6 @@ router.post("/tasks", auth, createTask);
 router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
 router.patch("/tasks/:id", auth, updateTask);
-router.delete("/tasks/:id", auth, removeTask);
+router.delete("/tasks/me", auth, removeTask);
 
 module.exports = router;
