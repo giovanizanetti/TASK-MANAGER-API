@@ -27,6 +27,19 @@ const userProfile = async (req, res) => {
   res.send(req.user);
 };
 
+const logout = async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token
+    );
+    await req.user.save();
+
+    res.send();
+  } catch (err) {
+    res.status(500).send();
+  }
+};
+
 const getSingleUser = async (req, res) => {
   const _id = req.params.id;
 
@@ -86,6 +99,7 @@ module.exports = {
   signup,
   login,
   userProfile,
+  logout,
   getSingleUser,
   updateUser,
   removeUser,

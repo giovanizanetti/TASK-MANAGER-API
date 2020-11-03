@@ -6,6 +6,7 @@ const {
   signup,
   login,
   userProfile,
+  logout,
   getSingleUser,
   updateUser,
   removeUser,
@@ -21,18 +22,7 @@ const {
 router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
-router.post("/users/logout", auth, async (req, res) => {
-  try {
-    req.user.tokens = req.user.tokens.filter(
-      (token) => token.token !== req.token
-    );
-    await req.user.save();
-
-    res.send();
-  } catch (err) {
-    res.status(500).send();
-  }
-});
+router.post("/users/logout", auth, logout);
 router.get("/users/:id", auth, getSingleUser);
 router.patch("/users/:id", auth, updateUser);
 router.delete("/users/:id", auth, removeUser);
