@@ -24,7 +24,7 @@ router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
-router.patch("/users/:id", auth, updateUser);
+router.patch("/users/me", auth, updateUser);
 router.delete("/users/:id", auth, removeUser);
 
 router.post("/tasks", auth, createTask);

@@ -51,7 +51,6 @@ const logoutAll = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const _id = req.params.id;
   const newData = req.body;
   const saveOptions = { validateModifiedOnly: true };
   const updates = Object.keys(newData);
@@ -67,14 +66,11 @@ const updateUser = async (req, res) => {
   }
 
   try {
-    const user = await User.findById(_id);
+    const { user } = req;
 
     updates.forEach((update) => (user[update] = newData[update]));
     await user.save(saveOptions);
 
-    if (!user) {
-      return res.status(404).send();
-    }
     res.send(user);
   } catch (err) {
     res.status(400).send(err);
@@ -86,7 +82,9 @@ const removeUser = async (req, res) => {
     const user = req.user;
     await user.remove();
     res.send(user);
-  } catch (err) {}
+  } catch (err) {
+    res.status(500).send();
+  }
 };
 
 module.exports = {
