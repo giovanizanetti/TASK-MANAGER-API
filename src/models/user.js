@@ -58,6 +58,17 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
+// Hide password ant okens for user
+userSchema.methods.toJSON = function () {
+  const user = this;
+  const userObj = user.toObject();
+
+  delete userObj.password;
+  delete userObj.tokens;
+
+  return userObj;
+};
+
 // Verify credentails
 userSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
