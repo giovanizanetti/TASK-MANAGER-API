@@ -25,12 +25,12 @@ router.get("/users/me", auth, userProfile);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
 router.patch("/users/me", auth, updateUser);
-router.delete("/users/:id", auth, removeUser);
+router.delete("/users/me", auth, removeUser);
 
 router.post("/tasks", auth, createTask);
 router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
 router.patch("/tasks/:id", auth, updateTask);
-router.delete("/tasks/me", auth, removeTask);
+router.delete("/tasks/:id", auth, removeTask);
 
 module.exports = router;

@@ -72,8 +72,11 @@ const removeTask = async (req, res) => {
   const author = req.user._id;
 
   try {
-    const task = await Task.findByIdAndDelete(_id);
-    // const task = awaitfindOneAndDelete({ _id, author });
+    // const task = await Task.findByIdAndDelete(_id);
+    // console.log(author);
+    // console.log(req);
+    // console.log("bsbsbsb");
+    const task = await Task.findOneAndDelete({ _id, author });
     if (!task) return res.status(404).send({ error: "Task not found!" });
     res.send(task);
   } catch (err) {
