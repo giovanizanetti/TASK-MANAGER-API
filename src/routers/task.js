@@ -41,6 +41,7 @@ const getSingleTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   const _id = req.params.id;
+  const author = req.user._id;
   const newData = req.body;
   const updates = Object.keys(newData);
   const saveOptions = { validateModifiedOnly: true };
@@ -54,7 +55,7 @@ const updateTask = async (req, res) => {
     return res.status(400).send({ error: "Invalid update!" });
 
   try {
-    const task = await Task.findById(_id);
+    const task = await Task.findOne({ _id, author });
 
     updates.forEach((update) => (task[update] = newData[update]));
     await task.save(saveOptions);
