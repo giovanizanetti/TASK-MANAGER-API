@@ -27,7 +27,9 @@ const getSingleTask = async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const task = await Task.findById(_id);
+    const author = req.user._id;
+    const task = await Task.findOne({ _id, author });
+
     if (!task) return res.status(404).send();
     res.send(task);
   } catch (err) {
