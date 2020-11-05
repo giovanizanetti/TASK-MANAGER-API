@@ -58,7 +58,14 @@ userSchema.methods.generateAuthToken = async function () {
   return token;
 };
 
-// Hide password ant okens for user
+// Connect user collection to the taks collection
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "author",
+});
+
+// Hide password and tokens for user
 userSchema.methods.toJSON = function () {
   const user = this;
   const userObj = user.toObject();
