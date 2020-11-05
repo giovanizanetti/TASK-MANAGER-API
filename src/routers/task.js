@@ -15,8 +15,10 @@ const createTask = async (req, res) => {
 };
 
 const readTasks = async (req, res) => {
+  const author = req.user._id;
+
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ author });
     res.status(201).send(tasks);
   } catch (err) {
     res.status(500).send();
@@ -25,9 +27,9 @@ const readTasks = async (req, res) => {
 
 const getSingleTask = async (req, res) => {
   const _id = req.params.id;
+  const author = req.user._id;
 
   try {
-    const author = req.user._id;
     const task = await Task.findOne({ _id, author });
 
     if (!task) return res.status(404).send();
