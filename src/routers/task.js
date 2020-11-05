@@ -57,11 +57,11 @@ const updateTask = async (req, res) => {
   try {
     const task = await Task.findOne({ _id, author });
 
-    updates.forEach((update) => (task[update] = newData[update]));
-    await task.save(saveOptions);
-
     if (!task) return res.status(404).send();
     res.send(task);
+
+    updates.forEach((update) => (task[update] = newData[update]));
+    await task.save(saveOptions);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -69,9 +69,11 @@ const updateTask = async (req, res) => {
 
 const removeTask = async (req, res) => {
   const _id = req.params.id;
+  const author = req.user._id;
 
   try {
     const task = await Task.findByIdAndDelete(_id);
+    // const task = awaitfindOneAndDelete({ _id, author });
     if (!task) return res.status(404).send({ error: "Task not found!" });
     res.send(task);
   } catch (err) {
