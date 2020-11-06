@@ -11,6 +11,7 @@ const {
   updateUser,
   removeUser,
 } = require("./user");
+
 const {
   createTask,
   readTasks,
@@ -20,6 +21,7 @@ const {
   removeAllTasks,
 } = require("./task");
 
+// User Routers
 router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
@@ -28,6 +30,7 @@ router.post("/users/logoutAll", auth, logoutAll);
 router.patch("/users/me", auth, updateUser);
 router.delete("/users/me", auth, removeUser);
 
+// Task routers
 router.post("/tasks", auth, createTask);
 router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
