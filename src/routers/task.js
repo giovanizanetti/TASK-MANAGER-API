@@ -84,7 +84,6 @@ const removeAllTasks = async (req, res) => {
   const author = req.user._id;
 
   try {
-    // const tasks = await Task.find({ author }).deleteMany();
     const tasks = await Task.deleteMany({ author });
     res.status(201).send(tasks);
   } catch (err) {

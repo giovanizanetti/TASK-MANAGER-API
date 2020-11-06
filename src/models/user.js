@@ -4,49 +4,52 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Tasks = require("../models/task");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
-  age: {
-    type: Number,
-    required: true,
-    validate(value) {
-      if (value < 0) throw new Error("Age must be a valid age ");
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
     },
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value))
-        throw new Error("Email must be a valid email");
-    },
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 6,
-    validate(value) {
-      const word = "password";
-      if (value.toLowerCase().includes("password"))
-        throw new Error(`Password can not contain the word ${word}`);
-    },
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
+    age: {
+      type: Number,
+      required: true,
+      validate(value) {
+        if (value < 0) throw new Error("Age must be a valid age ");
       },
     },
-  ],
-});
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value))
+          throw new Error("Email must be a valid email");
+      },
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 6,
+      validate(value) {
+        const word = "password";
+        if (value.toLowerCase().includes("password"))
+          throw new Error(`Password can not contain the word ${word}`);
+      },
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+        },
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 // Generate token
 userSchema.methods.generateAuthToken = async function () {
