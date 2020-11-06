@@ -18,13 +18,14 @@ const readTasks = async (req, res) => {
   const author = req.user._id;
   const query = req.query.completed;
   const options = { author };
+  const limitQuery = parseInt(req.query.limit);
 
   // Add completed option to the obj options passed into find Task.
   if (query === "false") options.completed = false;
   if (query === "true") options.completed = true;
 
   try {
-    const tasks = await Task.find(options);
+    const tasks = await Task.find(options).limit(limitQuery);
     res.status(201).send(tasks);
   } catch (err) {
     res.status(500).send();
