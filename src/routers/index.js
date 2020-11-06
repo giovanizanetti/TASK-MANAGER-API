@@ -17,6 +17,7 @@ const {
   getSingleTask,
   updateTask,
   removeTask,
+  removeAllTasks,
 } = require("./task");
 
 router.post("/users/signup", signup);
@@ -32,5 +33,6 @@ router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
 router.patch("/tasks/:id", auth, updateTask);
 router.delete("/tasks/:id", auth, removeTask);
+router.delete("/tasks", auth, removeAllTasks);
 
 module.exports = router;
