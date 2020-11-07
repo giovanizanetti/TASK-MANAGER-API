@@ -16,17 +16,29 @@ const createTask = async (req, res) => {
 
 const readTasks = async (req, res) => {
   const author = req.user._id;
-  const query = req.query.completed;
   const options = { author };
+  const completedQuery = req.query.completed;
   const limitQuery = parseInt(req.query.limit);
   const skipQuery = parseInt(req.query.skip);
+  const sortQuery = {};
 
-  // Add completed option to the obj options passed into find Task.
-  if (query === "false") options.completed = false;
-  if (query === "true") options.completed = true;
+  // in case completed query is provideded, populate the options obj wich is  passed into find Task.
+  if (completedQuery === "false") options.completed = false;
+  if (completedQuery === "true") options.completed = true;
+  //
+
+  // In case sortQuery is provided, populate the object passed into sort method.
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split(":");
+    sortQuery[parts[0]] = parts[1];
+  }
+  //
 
   try {
-    const tasks = await Task.find(options).limit(limitQuery).skip(skipQuery);
+    const tasks = await Task.find(options)
+      .limit(limitQuery)
+      .skip(skipQuery)
+      .sort(sortQuery);
     res.status(201).send(tasks);
   } catch (err) {
     res.status(500).send();
