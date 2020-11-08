@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-const uploadAvatar = multer({
+const avatar = multer({
   dest: "avatars/",
   limits: {
     fileSize: 1000000, //1MB
@@ -14,7 +14,7 @@ const uploadAvatar = multer({
 
     cb(undefined, true);
   },
-});
+}).single("avatar");
 
 // const upload = multer({
 //   dest: "images",
@@ -32,5 +32,5 @@ const uploadAvatar = multer({
 // });
 
 module.exports = {
-  uploadAvatar,
+  avatar,
 };
