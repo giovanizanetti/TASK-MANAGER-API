@@ -40,12 +40,10 @@ const logout = async (req, res) => {
   }
 };
 
-const avatarUpload = (req, res) => {
-  try {
-    res.send();
-  } catch (err) {
-    res.status(500).json(err);
-  }
+const avatarUpload = async (req, res) => {
+  req.user.avatar = req.file.buffer;
+  await req.user.save();
+  res.send();
 };
 
 const logoutAll = async (req, res) => {
