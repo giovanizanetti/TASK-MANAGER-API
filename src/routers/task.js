@@ -1,3 +1,4 @@
+const sharp = require("sharp");
 const Task = require("../models/task");
 
 const createTask = async (req, res) => {
@@ -89,6 +90,22 @@ const updateTask = async (req, res) => {
   }
 };
 
+const uploadTaskFiles = async (req, res) => {
+  const _id = req.params.id;
+  const author = req.user._id;
+
+  try {
+    const task = await Task.findOne({ _id, author });
+    const newFiles = req.files.map((file) => file.buffer);
+
+    task.files = task.files.concat(newFiles);
+    await task.save();
+    res.send(task);
+  } catch (err) {
+    res.send(err);
+  }
+};
+
 const removeTask = async (req, res) => {
   const _id = req.params.id;
   const author = req.user._id;
@@ -118,6 +135,7 @@ module.exports = {
   readTasks,
   getSingleTask,
   updateTask,
+  uploadTaskFiles,
   removeTask,
   removeAllTasks,
 };

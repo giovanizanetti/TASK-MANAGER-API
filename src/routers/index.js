@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { avatar } = require("../middlewares/images");
+const { avatar, taskFiles } = require("../middlewares/filesUpload");
 const auth = require("../middlewares/auth");
 const err400 = require("../errors/400");
 
@@ -22,6 +22,7 @@ const {
   readTasks,
   getSingleTask,
   updateTask,
+  uploadTaskFiles,
   removeTask,
   removeAllTasks,
 } = require("./task");
@@ -43,6 +44,7 @@ router.post("/tasks", auth, createTask);
 router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
 router.patch("/tasks/:id", auth, updateTask);
+router.post("/tasks/:id/upload", auth, taskFiles, uploadTaskFiles, err400);
 router.delete("/tasks/:id", auth, removeTask);
 router.delete("/tasks", auth, removeAllTasks);
 
