@@ -1,3 +1,4 @@
+const sharp = require("sharp");
 const User = require("../models/user");
 
 const signup = async (req, res) => {
@@ -41,7 +42,12 @@ const logout = async (req, res) => {
 };
 
 const uploadAvatar = async (req, res) => {
-  req.user.avatar = req.file.buffer;
+  const buffer = await sharp(req.file.buffer)
+    .resize({ width: 250, height: 250 })
+    .png()
+    .toBuffer();
+
+  req.user.avatar = buffer;
   await req.user.save();
   res.send();
 };
@@ -66,7 +72,7 @@ const getUserAvatar = async (req, res) => {
     }
 
     // Modify the default header from application/json to image/jpg
-    res.set("Content-Type", "image/jpg");
+    res.set("Content-Type", "image/png");
     res.send(user.avatar);
   } catch (err) {
     res.status(404).send();

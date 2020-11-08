@@ -5,11 +5,6 @@ require("./db/mongoose.js");
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.post("/upload", upload.single("upload"), (req, res) => {
-  console.log("requesteddddddd");
-  res.send();
-});
-
 app.use(express.json());
 app.use(router);
 
