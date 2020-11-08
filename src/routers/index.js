@@ -27,7 +27,7 @@ const {
 router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
-router.post("/users/me/avatar", avatar, avatarUpload, avatarError);
+router.post("/users/me/avatar", auth, avatar, avatarUpload, avatarError);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
 router.patch("/users/me", auth, updateUser);
