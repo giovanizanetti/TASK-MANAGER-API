@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { avatar, avatarError } = require("../middleware/images");
-const auth = require("../middleware/auth");
+const { avatar } = require("../middlewares/images");
+const auth = require("../middlewares/auth");
+const err400 = require("../errors/400");
 
 const {
   signup,
@@ -27,7 +28,7 @@ const {
 router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
-router.post("/users/me/avatar", auth, avatar, avatarUpload, avatarError);
+router.post("/users/me/avatar", auth, avatar, avatarUpload, err400);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
 router.patch("/users/me", auth, updateUser);
