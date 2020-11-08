@@ -40,10 +40,20 @@ const logout = async (req, res) => {
   }
 };
 
-const avatarUpload = async (req, res) => {
+const uploadAvatar = async (req, res) => {
   req.user.avatar = req.file.buffer;
   await req.user.save();
   res.send();
+};
+
+const removeAvatar = async (req, res) => {
+  try {
+    req.user.avatar = null;
+    await req.user.save();
+    res.send();
+  } catch (err) {
+    res.status(500).send();
+  }
 };
 
 const logoutAll = async (req, res) => {
@@ -97,7 +107,8 @@ module.exports = {
   signup,
   login,
   userProfile,
-  avatarUpload,
+  uploadAvatar,
+  removeAvatar,
   logout,
   logoutAll,
   updateUser,
