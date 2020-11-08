@@ -10,6 +10,7 @@ const {
   userProfile,
   uploadAvatar,
   removeAvatar,
+  getUserAvatar,
   logout,
   logoutAll,
   updateUser,
@@ -31,6 +32,7 @@ router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
 router.post("/users/me/avatar", auth, avatar, uploadAvatar, err400);
 router.delete("/users/me/avatar", auth, removeAvatar);
+router.get("/users/:id/avatar", getUserAvatar);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
 router.patch("/users/me", auth, updateUser);

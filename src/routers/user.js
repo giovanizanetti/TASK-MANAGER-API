@@ -52,7 +52,24 @@ const removeAvatar = async (req, res) => {
     await req.user.save();
     res.send();
   } catch (err) {
-    res.status(500).send();
+    res.status(404).send();
+  }
+};
+const getUserAvatar = async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const user = await User.findById(_id);
+
+    if (!user || !user.avatar) {
+      throw Error();
+    }
+
+    // Modify the default header from application/json to image/jpg
+    res.set("Content-Type", "image/jpg");
+    res.send(user.avatar);
+  } catch (err) {
+    res.status(404).send();
   }
 };
 
@@ -109,6 +126,7 @@ module.exports = {
   userProfile,
   uploadAvatar,
   removeAvatar,
+  getUserAvatar,
   logout,
   logoutAll,
   updateUser,
