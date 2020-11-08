@@ -9,12 +9,15 @@ const avatar = multer({
     const imageType = /\.(jpg|jpeg|png)$/;
 
     if (!file.originalname.match(imageType)) {
-      return cb(new Error("Image type must be jpg, jpeg or png"));
+      return cb(new Error("Please upload an image of format jpg, jpeg or png"));
     }
 
     cb(undefined, true);
   },
 }).single("avatar");
+
+const avatarError = (err, req, res, next) =>
+  res.status(400).send({ error: err.message });
 
 // const upload = multer({
 //   dest: "images",
@@ -33,4 +36,5 @@ const avatar = multer({
 
 module.exports = {
   avatar,
+  avatarError,
 };

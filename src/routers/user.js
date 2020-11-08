@@ -44,7 +44,7 @@ const avatarUpload = (req, res) => {
   try {
     res.send();
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).json(err);
   }
 };
 
@@ -54,7 +54,7 @@ const logoutAll = async (req, res) => {
     await req.user.save();
     res.send();
   } catch (err) {
-    res.status(500).send;
+    res.status(500).send();
   }
 };
 
