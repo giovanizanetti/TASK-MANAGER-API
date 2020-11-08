@@ -40,6 +40,14 @@ const logout = async (req, res) => {
   }
 };
 
+const avatarUpload = (req, res) => {
+  try {
+    res.send();
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
+
 const logoutAll = async (req, res) => {
   try {
     req.user.tokens = [];
@@ -91,6 +99,7 @@ module.exports = {
   signup,
   login,
   userProfile,
+  avatarUpload,
   logout,
   logoutAll,
   updateUser,
