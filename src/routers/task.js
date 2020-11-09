@@ -24,7 +24,7 @@ const readTasks = async (req, res) => {
   const skipQuery = parseInt(skip);
   const sortQuery = {};
 
-  // in case completed query is provideded, populate the options obj wich is  passed into find Task.
+  // In case completed query is provideded, populate the options obj wich is passed into find Task.
   if (completedQuery === "false") options.completed = false;
   if (completedQuery === "true") options.completed = true;
   //

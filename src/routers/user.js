@@ -1,3 +1,4 @@
+const sharp = require("sharp");
 const User = require("../models/user");
 
 const signup = async (req, res) => {
@@ -40,13 +41,51 @@ const logout = async (req, res) => {
   }
 };
 
+const uploadAvatar = async (req, res) => {
+  const buffer = await sharp(req.file.buffer)
+    .resize({ width: 250, height: 250 })
+    .png()
+    .toBuffer();
+
+  req.user.avatar = buffer;
+  await req.user.save();
+  res.send();
+};
+
+const removeAvatar = async (req, res) => {
+  try {
+    req.user.avatar = null;
+    await req.user.save();
+    res.send();
+  } catch (err) {
+    res.status(404).send();
+  }
+};
+const getUserAvatar = async (req, res) => {
+  const _id = req.params.id;
+
+  try {
+    const user = await User.findById(_id);
+
+    if (!user || !user.avatar) {
+      throw Error();
+    }
+
+    // Modify the default header from application/json to image/jpg
+    res.set("Content-Type", "image/png");
+    res.send(user.avatar);
+  } catch (err) {
+    res.status(404).send();
+  }
+};
+
 const logoutAll = async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();
     res.send();
   } catch (err) {
-    res.status(500).send;
+    res.status(500).send();
   }
 };
 
@@ -91,6 +130,9 @@ module.exports = {
   signup,
   login,
   userProfile,
+  uploadAvatar,
+  removeAvatar,
+  getUserAvatar,
   logout,
   logoutAll,
   updateUser,
