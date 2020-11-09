@@ -15,6 +15,13 @@ const avatar = multer({
   },
 }).single("avatar");
 
+const taskFiles = multer({
+  limits: {
+    fileSize: 3000000, //3MB
+  },
+}).array("files", 10);
+
 module.exports = {
   avatar,
+  taskFiles,
 };
