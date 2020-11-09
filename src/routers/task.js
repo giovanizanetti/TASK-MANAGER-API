@@ -1,5 +1,6 @@
 const sharp = require("sharp");
 const Task = require("../models/task");
+const user = require("./user");
 
 const createTask = async (req, res) => {
   const task = new Task({
@@ -98,11 +99,32 @@ const uploadTaskFiles = async (req, res) => {
     const task = await Task.findOne({ _id, author });
     const newFiles = req.files.map((file) => file.buffer);
 
-    task.files = task.files.concat(newFiles);
-    await task.save();
-    res.send(task);
+    if (req.files.length) {
+      task.files = task.files.concat(newFiles);
+      await task.save();
+      res.send();
+    } else {
+      throw new Error();
+    }
   } catch (err) {
     res.send(err);
+  }
+};
+
+const getUploadedTaksFiles = async (req, res) => {
+  const _id = req.params.id;
+  const author = req.user._id;
+
+  try {
+    const task = await Task.findOne({ _id, author });
+
+    console.log(task);
+    console.log(_id);
+
+    if (!task || !task.files) throw new Error();
+    res.send(task.files);
+  } catch (err) {
+    res.status(404).send();
   }
 };
 
@@ -136,6 +158,7 @@ module.exports = {
   getSingleTask,
   updateTask,
   uploadTaskFiles,
+  getUploadedTaksFiles,
   removeTask,
   removeAllTasks,
 };

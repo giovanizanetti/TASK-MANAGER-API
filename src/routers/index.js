@@ -23,6 +23,7 @@ const {
   getSingleTask,
   updateTask,
   uploadTaskFiles,
+  getUploadedTaksFiles,
   removeTask,
   removeAllTasks,
 } = require("./task");
@@ -32,7 +33,7 @@ router.post("/users/signup", signup);
 router.post("/users/login", login);
 router.get("/users/me", auth, userProfile);
 router.post("/users/me/avatar", auth, avatar, uploadAvatar, err400);
-router.delete("/users/me/avatar", auth, removeAvatar);
+router.delete("/users/me/avatar", auth, removeAvatar, err400);
 router.get("/users/:id/avatar", getUserAvatar);
 router.post("/users/logout", auth, logout);
 router.post("/users/logoutAll", auth, logoutAll);
@@ -45,6 +46,7 @@ router.get("/tasks", auth, readTasks);
 router.get("/tasks/:id", auth, getSingleTask);
 router.patch("/tasks/:id", auth, updateTask);
 router.post("/tasks/:id/upload", auth, taskFiles, uploadTaskFiles, err400);
+router.get("/tasks/:id/upload", auth, getUploadedTaksFiles);
 router.delete("/tasks/:id", auth, removeTask);
 router.delete("/tasks", auth, removeAllTasks);
 
