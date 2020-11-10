@@ -1,6 +1,9 @@
 const sharp = require("sharp");
 const User = require("../models/user");
-const { sendWelcomeEmail } = require("../emails/account");
+const {
+  sendWelcomeEmail,
+  sendCancellationEmail,
+} = require("../emails/account");
 
 const signup = async (req, res) => {
   const user = new User(req.body);
@@ -122,7 +125,10 @@ const updateUser = async (req, res) => {
 const removeUser = async (req, res) => {
   try {
     const user = req.user;
+    const { email, name } = user;
+
     await user.remove();
+    sendCancellationEmail(email, name);
     res.send(user);
   } catch (err) {
     res.status(500).send();

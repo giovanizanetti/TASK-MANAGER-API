@@ -17,23 +17,25 @@ const sendWelcomeEmail = (email, name) => {
     to: email,
     from: SENDER_EMAIL,
     subject: "Welcome!!",
-    text: `Hi ${name}!\n
-          Welcome to the app.`,
+    text: `Hi ${name}!\n \nWelcome to the app.`,
   });
 };
 
-const cancelationEmail = (email, name) => {
+const sendCancellationEmail = (email, name) => {
   sgMail.send({
     to: email,
     from: SENDER_EMAIL,
     subject: "Good Bye",
     text: `Dear ${name}.\n
-          We are sorry to se you go. You were a valuable costumer for us.\n 
-          If you change your mind in the future we are going to be always here.`,
+          We are sorry to se you go. You are a valuable costumer for us.\n 
+          If you change your mind in the future we are going to be always here for you. \n
+          From now on yur account is no longer active.\n \n 
+          Best Regards,\n
+          Our App`,
   });
 };
 
 module.exports = {
   sendWelcomeEmail,
-  cancelationEmail,
+  sendCancellationEmail,
 };
