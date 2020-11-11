@@ -3,6 +3,7 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Tasks = require("../models/task");
+const { TOKEN_SECRET } = process.env;
 
 const userSchema = new mongoose.Schema(
   {
@@ -57,7 +58,7 @@ const userSchema = new mongoose.Schema(
 // Generate token
 userSchema.methods.generateAuthToken = async function () {
   const user = this;
-  const token = jwt.sign({ _id: user.id.toString() }, "blajdjdjdj");
+  const token = jwt.sign({ _id: user.id.toString() }, TOKEN_SECRET);
 
   user.tokens.push({ token });
   await user.save();
