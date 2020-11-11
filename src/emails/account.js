@@ -1,16 +1,7 @@
-const SEND_GRID_API_KEY =
-  "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";
-const SENDER_EMAIL = "zanetti.giovani@gmail.com";
+const { SENDER_EMAIL, SEND_GRID_API_KEY } = process.env;
 const sgMail = require("@sendgrid/mail");
 
 sgMail.setApiKey(SEND_GRID_API_KEY);
-
-// sgMail.send({
-//   to: "zanetti.giovani@gmail.com",
-//   from: "zanetti.giovani@gmail.com",
-//   subject: "Testting first email",
-//   text: "I hope it worked.",
-// });
 
 const sendWelcomeEmail = (email, name) => {
   sgMail.send({
@@ -25,7 +16,7 @@ const sendCancellationEmail = (email, name) => {
   sgMail.send({
     to: email,
     from: SENDER_EMAIL,
-    subject: "Good Bye",
+    subject: "GoodBye",
     text: `Dear ${name}.\n
           We are sorry to se you go. You are a valuable costumer for us.\n 
           If you change your mind in the future we are going to be always here for you. \n
