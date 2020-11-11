@@ -1,11 +1,17 @@
 const sharp = require("sharp");
 const User = require("../models/user");
+const {
+  sendWelcomeEmail,
+  sendCancellationEmail,
+} = require("../emails/account");
 
 const signup = async (req, res) => {
   const user = new User(req.body);
+  const { email, name } = user;
   try {
     const token = await user.generateAuthToken();
     await user.save();
+    sendWelcomeEmail(email, name);
     res.status(201).send({ user, token });
   } catch (err) {
     res.status(400).send(err);
@@ -119,7 +125,10 @@ const updateUser = async (req, res) => {
 const removeUser = async (req, res) => {
   try {
     const user = req.user;
+    const { email, name } = user;
+
     await user.remove();
+    sendCancellationEmail(email, name);
     res.send(user);
   } catch (err) {
     res.status(500).send();

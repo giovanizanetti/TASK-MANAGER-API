@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { avatar, taskFiles } = require("../middlewares/filesUpload");
-const auth = require("../middlewares/auth");
+const { avatar, taskFiles } = require("../middleware/filesUpload");
+const auth = require("../middleware/auth");
 const err400 = require("../errors/400");
 
 const {
