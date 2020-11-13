@@ -34,15 +34,32 @@ beforeEach(async () => {
 
 // TESTS
 test("Should signup a new user", async () => {
-  await request(app)
+  const newUser = {
+    name: "Giovani",
+    email: "giovani@example.com",
+    password: "MyPass777!",
+    age: 34,
+  };
+
+  //Assertion for correct response status code
+  const response = await request(app)
     .post("/users/signup")
-    .send({
-      name: "Giovani",
-      email: "giovani@example.com",
-      password: "MyPass777!",
-      age: 34,
-    })
+    .send(newUser)
     .expect(201);
+
+  //Assert if the db was correctly changed
+  const user = await User.findById(response.body.user._id);
+  expect(user).not.toBeNull();
+
+  //Aseertion about the response data
+  const { email, password, name } = newUser;
+  expect(response.body).toMatchObject({
+    user: { email, name },
+    token: user.tokens[0].token,
+  });
+
+  //Assertion for non plain string password stored in the db
+  expect(user.password).not.toBe(password);
 });
 
 test("Should login existing user", async () => {
