@@ -43,7 +43,7 @@ const taskTwo = {
   _id: new mongoose.Types.ObjectId(),
   description: "Second test task",
   completed: true,
-  author: userTwo._id,
+  author: userOne._id,
 };
 
 const taskThree = {

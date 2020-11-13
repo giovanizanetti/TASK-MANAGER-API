@@ -43,7 +43,7 @@ const readTasks = async (req, res) => {
       .limit(limitQuery)
       .skip(skipQuery)
       .sort(sortQuery);
-    res.status(201).send(tasks);
+    res.status(200).send(tasks);
   } catch (err) {
     res.status(500).send();
   }
