@@ -25,3 +25,8 @@ test("Should signup a new user", async () => {
     })
     .expect(201);
 });
+
+test("Should login existing user", async () => {
+  const { email, password } = userOne;
+  await request(app).post("/users/login").send({ email, password }).expect(200);
+});
