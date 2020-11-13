@@ -2,8 +2,16 @@ const request = require("supertest");
 const app = require("../src/app");
 const User = require("../src/models/user");
 
+const userOne = {
+  name: "Alex",
+  email: "alex@test.com",
+  age: 33,
+  password: "AlexTest123?",
+};
+
 beforeEach(async () => {
   await User.deleteMany();
+  await new User(userOne).save();
 });
 
 test("Should signup a new user", async () => {
@@ -13,7 +21,7 @@ test("Should signup a new user", async () => {
       name: "Giovani",
       email: "giovani@example.com",
       password: "MyPass777!",
-      age: "34",
+      age: 34,
     })
     .expect(201);
 });
