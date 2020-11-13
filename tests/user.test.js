@@ -16,7 +16,7 @@ const nonexistentUser = {
 
 beforeEach(async () => {
   await User.deleteMany();
-  await new User(existinUser).save();
+  await new User(existentUser).save();
 });
 
 test("Should signup a new user", async () => {
