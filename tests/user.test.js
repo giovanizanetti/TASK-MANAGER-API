@@ -25,7 +25,7 @@ const nonexistentUser = {
   email: "anne@test.com",
 };
 
-// Clear created user by sigup unit test
+// Clear the user created by sigup unit test
 // Create a default user for authenticated unit tests
 beforeEach(async () => {
   await User.deleteMany();
@@ -55,7 +55,7 @@ test("Should not login nonexistent user", async () => {
   await request(app).post("/users/login").send({ email, password }).expect(400);
 });
 
-test("Should get profile for user", async () => {
+test("Should get profile for autheticated user", async () => {
   await request(app)
     .get("/users/me")
     .set("Authorization", `Bearer ${existentUser.tokens[0].token}`)
@@ -65,4 +65,12 @@ test("Should get profile for user", async () => {
 
 test("Should not get profile for unauthenticated user", async () => {
   await request(app).get("/users/me").send().expect(401);
+});
+
+test("Should delete account for athenticated user", async () => {
+  await request(app)
+    .delete("/users/me")
+    .send()
+    .set("Authorization", `Bearer ${existentUser.tokens[0].token}`)
+    .expect(200);
 });
