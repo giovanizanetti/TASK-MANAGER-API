@@ -64,7 +64,14 @@ test("Should signup a new user", async () => {
 
 test("Should login existing user", async () => {
   const { email, password } = existentUser;
-  await request(app).post("/users/login").send({ email, password }).expect(200);
+  const response = await request(app)
+    .post("/users/login")
+    .send({ email, password })
+    .expect(200);
+
+  //Assertion if new token is saved
+  const user = await User.findById(response.body.user._id);
+  expect(response.body.token).toBe(user.tokens[1].token); //when user logs in a second token is created and pushed to tokens array
 });
 
 test("Should not login nonexistent user", async () => {
