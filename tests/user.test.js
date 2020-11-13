@@ -121,3 +121,12 @@ test("Should update valid user fields", async () => {
   const user = await User.findById(userOneId);
   expect(user.name).toEqual(updatedFields.name);
 });
+
+test("Should not update invalid user fields", async () => {
+  const invalidFields = { color: "blue" };
+  await request(app)
+    .patch("/users/me")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send(invalidFields)
+    .expect(400);
+});
