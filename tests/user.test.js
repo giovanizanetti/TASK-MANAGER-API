@@ -1,28 +1,9 @@
 const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const app = require("../src/app");
-const { TOKEN_SECRET } = process.env;
 const User = require("../src/models/user");
+const { userOne, userOneId, setUpDataBase } = require("./fixtures/db");
 
-const userOneId = new mongoose.Types.ObjectId();
-const userOne = {
-  _id: userOneId,
-  name: "Mike",
-  email: "mike@example.com",
-  password: "56what!!",
-  age: 33,
-  tokens: [
-    {
-      token: jwt.sign({ _id: userOneId }, TOKEN_SECRET),
-    },
-  ],
-};
-
-beforeEach(async () => {
-  await User.deleteMany();
-  await new User(userOne).save();
-});
+beforeEach(setUpDataBase);
 
 test("Should signup a new user", async () => {
   const newUser = {
@@ -111,20 +92,20 @@ test("Should upload avatar image", async () => {
 });
 
 test("Should update valid user fields", async () => {
-  const updatedFields = { name: "Jair" };
-  const response = await request(app)
+  const fieldsToUpdate = { name: "Jair" };
+  await request(app)
     .patch("/users/me")
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
-    .send(updatedFields)
+    .send(fieldsToUpdate)
     .expect(200);
 
   const user = await User.findById(userOneId);
-  expect(user.name).toEqual(updatedFields.name);
+  expect(user.name).toEqual(fieldsToUpdate.name);
 });
 
 test("Should not update unauthenticated user", async () => {
-  const updatedFields = { name: "Jair" };
-  await request(app).patch("/users/me").send(updatedFields).expect(401);
+  const fieldsToUpdate = { name: "Jair" };
+  await request(app).patch("/users/me").send(fieldsToUpdate).expect(401);
 });
 
 test("Should not update invalid user fields", async () => {
