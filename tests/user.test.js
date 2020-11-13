@@ -122,6 +122,11 @@ test("Should update valid user fields", async () => {
   expect(user.name).toEqual(updatedFields.name);
 });
 
+test("Should not update unauthenticated user", async () => {
+  const updatedFields = { name: "Jair" };
+  await request(app).patch("/users/me").send(updatedFields).expect(401);
+});
+
 test("Should not update invalid user fields", async () => {
   const invalidFields = { color: "blue" };
   await request(app)
