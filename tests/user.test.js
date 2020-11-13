@@ -74,3 +74,7 @@ test("Should delete account for athenticated user", async () => {
     .set("Authorization", `Bearer ${existentUser.tokens[0].token}`)
     .expect(200);
 });
+
+test("Should not delete account for unautheticated user", async () => {
+  await request(app).delete("/users/me").send().expect(401);
+});
