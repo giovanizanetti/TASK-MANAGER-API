@@ -26,9 +26,9 @@ beforeEach(async () => {
 
 test("Should signup a new user", async () => {
   const newUser = {
-    name: "Andrew",
-    email: "andrew@example.com",
-    password: "MyPass777!",
+    name: "luis",
+    email: "luis@example.com",
+    password: "MyPass978!",
     age: "32",
   };
   const response = await request(app)
