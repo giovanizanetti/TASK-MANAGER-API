@@ -1,7 +1,14 @@
 const request = require("supertest");
 const app = require("../src/app");
 const Task = require("../src/models/task");
-const { userOne, userTwo, setUpDataBase } = require("./fixtures/db");
+const {
+  userOne,
+  userTwo,
+  taskOne,
+  taskTwo,
+  taskThree,
+  setUpDataBase,
+} = require("./fixtures/db");
 
 beforeEach(setUpDataBase);
 
@@ -28,14 +35,16 @@ test("Should fetch user tasks", async () => {
   expect(response.body.length).toEqual(2);
 });
 
-test("Should not user deletes tasks which are not their", async () => {
-  const taskToFind = { description: "First test task" };
-  const task = await Task.findOne(taskToFind);
-  await request(app)
-    .delete(`/tasks/${task._id}`)
-    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`) //User two is not the author form the task
-    .send()
-    .expect(401);
+test("Should not delete other users tasks", async () => {
+  // const taskToFind = { description: "First test task" };
+  // const task = await Task.findOne(taskToFind);
 
-  expect(task.description).toEqual(taskToFind.description);
+  await request(app)
+    .delete(`/tasks/${taskOne._id}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`) //User two is not the author from the task
+    .send()
+    .expect(404);
+
+  const task = await Task.findById(taskOne._id);
+  expect(task).not.toBeNull();
 });
