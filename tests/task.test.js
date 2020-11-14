@@ -33,7 +33,7 @@ test("Should not user deletes tasks which are not their", async () => {
   const task = await Task.findOne(taskToFind);
   await request(app)
     .delete(`/tasks/${task._id}`)
-    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`) //User two is not the author form the task
     .send()
     .expect(401);
 
