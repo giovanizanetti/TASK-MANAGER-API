@@ -41,7 +41,6 @@ test("Should fetch user tasks", async () => {
 });
 
 test("Should fetch only completed tasks", async () => {
-  const tasks = Task.find();
   const response = await request(app)
     .get("/tasks?completed=true")
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
@@ -49,6 +48,16 @@ test("Should fetch only completed tasks", async () => {
     .expect(200);
 
   expect(response.body.length).toEqual(1);
+});
+
+test("Should fetch sorted tasks in descending order of creation", async () => {
+  const response = await request(app)
+    .get("/tasks?sortBy=createdAt:-1")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  expect(response.body[0].description).toEqual("Second test task");
 });
 
 test("Should not update other users task", async () => {
