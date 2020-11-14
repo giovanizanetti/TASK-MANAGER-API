@@ -43,6 +43,10 @@ test("Should delete user task", async () => {
     .expect(200);
 });
 
+test("Should not delete task if unauthenticated", async () => {
+  await request(app).delete(`/tasks/${taskOne._id}`).send().expect(401);
+});
+
 test("Should not delete other users tasks", async () => {
   await request(app)
     .delete(`/tasks/${taskOne._id}`)
