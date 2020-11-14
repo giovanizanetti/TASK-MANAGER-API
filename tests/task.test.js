@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../src/app");
 const Task = require("../src/models/task");
-const { userOne, userOneId, setUpDataBase } = require("./fixtures/db");
+const { userOne, userTwo, setUpDataBase } = require("./fixtures/db");
 
 beforeEach(setUpDataBase);
 
@@ -26,4 +26,13 @@ test("Should fetch user tasks", async () => {
     .expect(200);
 
   expect(response.body.length).toEqual(2);
+});
+
+test("Should not fetch user tasks which are not their", async () => {
+  const task = await Task.findOne({ description: "First test task" });
+  await request(app)
+    .delete(`/tasks/${task._id}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`)
+    .send()
+    .expect(401);
 });
