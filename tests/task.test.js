@@ -40,6 +40,18 @@ test("Should fetch user tasks", async () => {
   expect(response.body.length).toEqual(2);
 });
 
+test("Should not update other users task", async () => {
+  const taskToBeUpdated = { description: "Updated test description" };
+  await request(app)
+    .patch(`/tasks/${taskOne._id}`)
+    .set("Authorization", `Bearer ${userTwo.tokens[0].token}`) //User two is not the author from the task
+    .send(taskToBeUpdated)
+    .expect(404);
+
+  const task = await Task.findById(taskOne._id);
+  expect(task).not.toBeNull();
+});
+
 test("Should delete user task", async () => {
   await request(app)
     .delete(`/tasks/${taskOne._id}`)
