@@ -42,6 +42,16 @@ test("Should not signup user with invalid name", async () => {
   await request(app).post("/users/signup").send(invalidNewUser).expect(400);
 });
 
+test("Should not signup user with invalid email", async () => {
+  const invalidNewUser = {
+    name: "marion",
+    email: "luis.example.com", //this is no a valid email
+    password: "MyPas44444@@!",
+    age: "30",
+  };
+  await request(app).post("/users/signup").send(invalidNewUser).expect(400);
+});
+
 test("Should login existing user", async () => {
   const response = await request(app)
     .post("/users/login")
