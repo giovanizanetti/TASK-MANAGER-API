@@ -61,16 +61,15 @@ test("Should fetch sorted tasks in descending order of creation", async () => {
 });
 
 test("Should not update unvalid input", async () => {
-  // const taskToBeUpdated = { description: "" };
+  const taskToBeUpdated = { description: "" }; //is not allowed empty task description
   await request(app)
     .patch(`/tasks/${taskOne._id}`)
     .set("Authorization", `Bearer ${userOne.tokens[0].token}`) //User two is not the author from the task
-    .send("")
+    .send(taskToBeUpdated)
     .expect(400);
 
   const task = await Task.findById(taskOne._id);
   expect(task.description).not.toEqual(taskToBeUpdated); //confirming that test from db was not updated
-  console.log(request.body);
 });
 
 test("Should not update other users task", async () => {
