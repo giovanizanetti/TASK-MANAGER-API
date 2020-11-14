@@ -82,10 +82,11 @@ const updateTask = async (req, res) => {
     const task = await Task.findOne({ _id, author });
 
     if (!task) return res.status(404).send();
-    res.send(task);
 
     updates.forEach((update) => (task[update] = newData[update]));
     await task.save(saveOptions);
+
+    res.send(task);
   } catch (err) {
     res.status(400).send(err);
   }
