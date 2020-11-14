@@ -12,7 +12,7 @@ const {
 
 beforeEach(setUpDataBase);
 
-test("should create task for user", async () => {
+test("Should create task for user", async () => {
   const newTask = { description: "This is a test task" };
   const response = await request(app)
     .post("/tasks")
@@ -23,6 +23,11 @@ test("should create task for user", async () => {
   const task = await Task.findById(response.body._id);
   expect(task).not.toBeNull();
   expect(task.completed).toEqual(false);
+});
+
+test("Should not create task for non authenticated user", async () => {
+  const newTask = { description: "This is a test task" };
+  await request(app).post("/tasks").send(newTask).expect(401);
 });
 
 test("Should fetch user tasks", async () => {
