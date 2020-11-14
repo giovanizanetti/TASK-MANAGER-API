@@ -36,9 +36,6 @@ test("Should fetch user tasks", async () => {
 });
 
 test("Should not delete other users tasks", async () => {
-  // const taskToFind = { description: "First test task" };
-  // const task = await Task.findOne(taskToFind);
-
   await request(app)
     .delete(`/tasks/${taskOne._id}`)
     .set("Authorization", `Bearer ${userTwo.tokens[0].token}`) //User two is not the author from the task

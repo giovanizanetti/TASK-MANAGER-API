@@ -32,6 +32,16 @@ test("Should signup a new user", async () => {
   expect(user.password).not.toBe(newUser.password); //Check is password is not saved as plain string to the db
 });
 
+test("Should not signup user with invalid name", async () => {
+  const invalidNewUser = {
+    name: "", //empty user name is not allowed
+    email: "luis@example.com",
+    password: "MyPass978!",
+    age: "32",
+  };
+  await request(app).post("/users/signup").send(invalidNewUser).expect(400);
+});
+
 test("Should login existing user", async () => {
   const response = await request(app)
     .post("/users/login")
