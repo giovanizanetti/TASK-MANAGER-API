@@ -40,6 +40,17 @@ test("Should fetch user tasks", async () => {
   expect(response.body.length).toEqual(2);
 });
 
+test("Should fetch only completed tasks", async () => {
+  const tasks = Task.find();
+  const response = await request(app)
+    .get("/tasks?completed=true")
+    .set("Authorization", `Bearer ${userOne.tokens[0].token}`)
+    .send()
+    .expect(200);
+
+  expect(response.body.length).toEqual(1);
+});
+
 test("Should not update other users task", async () => {
   const taskToBeUpdated = { description: "Updated test description" };
   await request(app)
@@ -49,7 +60,7 @@ test("Should not update other users task", async () => {
     .expect(404);
 
   const task = await Task.findById(taskOne._id);
-  expect(task).not.toBeNull();
+  expect(task.description).not.toEqual(taskToBeUpdated); //confirming that test from db was not updated
 });
 
 test("Should delete user task", async () => {
